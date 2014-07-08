@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="microcaApp">
+<head>
+    <meta charset="utf-8">
+    <title>liftCA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap-3.1.1.min.css" media="screen">
+    <link rel="stylesheet" href="css/font-awesome-4.0.3.min.css">
+    <style>
+        body {
+        padding: 30px;
+        }
+
+        .navbar {
+        margin-bottom: 30px;
+        }
+    </style>
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv-3.6.2pre.min.js"></script>
+    <script src="js/respond-1.1.0.min.js"></script>
+    <![endif]-->
+    <script src="js/angular-1.1.5.min.js"></script>
+    <script src="js/underscore-1.5.2.js"></script>
+    <script src="js/app.js"></script>
+</head>
+<body>
+<div class="container">
+
+    <div class="navbar navbar-default" role="navigation">
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-left">
+                <li><a class="navbar-brand" href="/#"><span class="fa fa-home"></span> liftCA</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="https://github.com/jeanfric/liftca"><span class="fa fa-github"></span> Get liftCA</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div ng-view></div>
+
+    <div style="text-align:center;color:#777;">
+        <p class="text-center small">liftCA demo site - data may be deleted at any point.</p>
+    </div>
+</div>
+</body>
+</html>

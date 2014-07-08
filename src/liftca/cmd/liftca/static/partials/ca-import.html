@@ -1,0 +1,26 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Upload Certificate Authority</h3>
+    </div>
+    <div class="panel-body">
+        <form role="form">
+            <div class="form-group">
+                <label for="pemCert">PEM-Encoded Certificate</label>
+                <textarea rows="10" class="form-control" id="pemCert" ng-model="ca.pemCertificate" placeholder="Paste the raw content of the PEM-encoded certificate: -----BEGIN CERTIFICATE----- [...] -----END CERTIFICATE-----"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="pemKey">PEM-Encoded Private Key</label>
+                <textarea rows="10" class="form-control" id="pemKey" ng-model="ca.pemKey" placeholder="Paste the raw content of the PEM-encoded private key: -----BEGIN RSA PRIVATE KEY----- [...] -----END RSA PRIVATE KEY-----"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="pemKeyPassword">Private Key Password</label>
+                <input type="text" rows="10" class="form-control" id="pemKeyPassword" ng-model="ca.pemKeyPassword" placeholder=""/>
+            </div>
+            <div class="checkbox">
+                <input type="checkbox" id="visible" ng-model="ca.visible"/><label for="visible">Visible</label> &nbsp; <small>Visible CAs will be listed on the main page; invisible CAs will only be accessible if you know the URL.</small>
+            </div>
+
+            <button type="submit" class="btn btn-primary" ng-click="importCA(ca)">Import</button>
+        </form>
+    </div>
+</div>

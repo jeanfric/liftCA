@@ -1,0 +1,37 @@
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title"><span class="fa fa-certificate"></span> {{cert.host}}</h3>
+  </div>
+  <div class="panel-body">
+    <dl class="dl-horizontal">
+      <dt>Issuing Authority</dt>
+      <dd><a ng-href="/#/ca/{{ca.serialNumber}}"><span class="fa fa-shield"></span> {{ca.name}}</a></dd>
+      <dt>Status</dt>
+      <dd>
+        <span ng-if="certRevoked"><span class="text-danger">Revoked</span> <a style="padding-left:6px;" href="" ng-click="unrevokeCert()"><span class="fa fa-undo"></span> Unrevoke</a></span>
+        <span ng-if="!certRevoked">Not revoked <a style="padding-left:6px" href="" ng-click="revokeCert()"><span class="fa fa-ban"></span> Revoke</a></span>
+      </dd>
+      <dt>Host</dt>
+      <dd>{{cert.host}}
+        <span ng-if="isValidLink">
+        &rarr; Visit using <a ng-href="http://{{cert.host}}" rel="nofollow"><span class="fa fa-unlock"></span> HTTP</a> or <a ng-href="https://{{cert.host}}" rel="nofollow"><span class="fa fa-lock"></span> HTTPS</a>
+        </span>
+      </dd>
+      <dt>Subject Key ID</dt>
+      <dd><tt>{{cert.subjectKeyID}}</tt></dd>
+      <dt>Authority Key ID</dt>
+      <dd><tt>{{cert.authorityKeyID}}</tt></dd>
+      <dt>Serial Number</dt>
+      <dd>{{cert.serialNumber}}</dd>
+      <dt>Certificate</dt>
+      <dd>
+        Download file: <a ng-href="/ca/{{ca.serialNumber}}/cert/{{cert.serialNumber}}-certificate.pem"><span class="fa fa-download"></span> PEM format</a>, 
+        or <a ng-href="/ca/{{ca.serialNumber}}/cert/{{cert.serialNumber}}-certificate.cer"><span class="fa fa-download"></span> CER format</a>.  View in browser: <a ng-href="/ca/{{ca.serialNumber}}/cert/{{cert.serialNumber}}-certificate.pem.txt"><span class="fa fa-search"></span> PEM format</a>.</dd>
+      <dt>Private Key</dt>
+      <dd>
+        Download file: <a ng-href="/ca/{{ca.serialNumber}}/cert/{{cert.serialNumber}}-private-key.pem"><span class="fa fa-download"></span> PEM format</a>, 
+        or <a ng-href="/ca/{{ca.serialNumber}}/cert/{{cert.serialNumber}}-private-key.cer"><span class="fa fa-download"></span> CER format</a>.  View in browser: <a ng-href="/ca/{{ca.serialNumber}}/cert/{{cert.serialNumber}}-private-key.pem.txt"><span class="fa fa-search"></span> PEM format</a>.
+      </dd>
+    </dl>
+  </div>
+</div>

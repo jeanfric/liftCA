@@ -1,0 +1,29 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Certificate authorities</h3>
+  </div>
+  <div class="panel-body">
+    <form role="form">
+      <div class="form-group">
+        <label for="caName">Name</label>
+        <input type="text" class="form-control" id="caName" ng-model="ca.name" placeholder="Common name"/>
+        <div class="checkbox">
+          <input type="checkbox" id="visible" ng-model="ca.visible"/><label for="visible">Visible</label> &nbsp; <small>Visible CAs will be listed on the main page; invisible CAs will only be accessible if you know the URL.</small>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary" ng-click="generateCA(ca)">Generate</button> <a style="padding-left:20px;" href="#/importca">Import Existing CA...</a>
+    </form>
+  </div>
+  <table class="table">
+    <tr>
+      <th><a href="" ng-click="predicate = 'name'; reverse=!reverse">Name</a></th>
+      <th><a href="" ng-click="predicate = 'subjectKeyID'; reverse=!reverse">Subject Key ID</a></th>
+      <th><a href="" ng-click="predicate = 'serialNumber'; reverse=!reverse">Serial</a></th>
+    </tr>
+    <tr ng-repeat="ca in cas | toArray | orderBy:predicate:reverse">
+      <td><a ng-href="#/ca/{{ca.serialNumber}}"><span class="fa fa-shield"></span> {{ca.name}}</a></td>
+      <td><tt>{{ca.subjectKeyID}}</tt></td>
+      <td>{{ca.serialNumber}}</td>
+    </tr>
+  </table>
+</div>
