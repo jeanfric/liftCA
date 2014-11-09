@@ -13,11 +13,6 @@ import (
 	"time"
 )
 
-func myHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	fmt.Fprint(w, "plop")
-}
-
 func main() {
 	quit := make(chan bool)
 
