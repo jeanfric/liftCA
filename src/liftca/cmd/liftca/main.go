@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"ht"
 	"liftca"
 	"liftca/cmd/liftca/handlers"
@@ -28,7 +27,17 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	store := liftca.NewStore(backingFile)
+	defer backingFile.Close()
+	store := liftca.LoadStore(backingFile)
+	storeChanged := make(chan struct{})
+	store.Updates(storeChanged)
+	go func(c <-chan struct{}) {
+		for {
+			<-c
+			store.DumpStore(backingFile)
+		}
+	}(storeChanged)
+
 	r := ht.NewRouter()
 	fileServer := ht.NewLoggingFileServer(http.Dir("static"))
 

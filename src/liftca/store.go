@@ -18,6 +18,7 @@ type Store struct {
 	children map[int64][]int64
 	topLevel map[int64]bool
 	revoked  map[int64]bool
+	listeners []chan<- struct{}
 }
 
 type gobStore struct {
@@ -29,7 +30,31 @@ type gobStore struct {
 	Revoked  map[int64]bool
 }
 
+func (s *Store) Updates(c chan<- struct{}) {
+	s.listeners = append(s.listeners, c)
+}
+
+func (s *Store) signalUpdates() {
+	for _, c := range(s.listeners) {
+		c <- struct{}{}
+	}
+}
+
 func NewStore(back *os.File) *Store {
+	s := &Store{
+		rw:       sync.RWMutex{},
+		idsource: idsource.New(make([]int64, 0)),
+		m:        make(map[int64]*Parcel),
+		children: make(map[int64][]int64),
+		parent:   make(map[int64]int64),
+		topLevel: make(map[int64]bool),
+		revoked:  make(map[int64]bool),
+		listeners: make([]chan<- struct{}, 0),
+	}
+	return s
+}
+
+func LoadStore(back *os.File) *Store {
 	d := &gobStore{}
 	dec := gob.NewDecoder(back)
 	err := dec.Decode(&d)
@@ -51,11 +76,12 @@ func NewStore(back *os.File) *Store {
 		parent:   d.Parent,
 		topLevel: d.TopLevel,
 		revoked:  d.Revoked,
+		listeners: make([]chan<- struct{}, 0),
 	}
 	return s
 }
 
-func (s *Store) dump() {
+func (s *Store) DumpStore(back *os.File) {
 	s.withRLocked(func() {
 		d := gobStore{
 			SpentIDs: s.idsource.SpentIDs(),
@@ -69,7 +95,7 @@ func (s *Store) dump() {
 		if err != nil {
 			log.Fatalf("error: %v", err)
 		}
-		err = s.back.Truncate(0)
+		err = back.Truncate(0)
 		if err != nil {
 			log.Fatalf("error: %v", err)
 		}
@@ -208,7 +234,7 @@ func (s *Store) withLocked(f func()) {
 	s.rw.Lock()
 	defer s.rw.Unlock()
 	f()
-	go s.dump()
+	s.signalUpdates()
 }
 
 func (s *Store) withRLocked(f func()) {
