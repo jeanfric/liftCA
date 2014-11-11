@@ -4,20 +4,19 @@ import (
 	"encoding/gob"
 	"fmt"
 	"idsource"
+	"io"
 	"log"
-	"os"
 	"sync"
 )
 
 type Store struct {
-	rw       sync.RWMutex
-	back     *os.File
-	idsource *idsource.IDSource
-	m        map[int64]*Parcel
-	parent   map[int64]int64
-	children map[int64][]int64
-	topLevel map[int64]bool
-	revoked  map[int64]bool
+	rw        sync.RWMutex
+	idsource  *idsource.IDSource
+	m         map[int64]*Parcel
+	parent    map[int64]int64
+	children  map[int64][]int64
+	topLevel  map[int64]bool
+	revoked   map[int64]bool
 	listeners []chan<- struct{}
 }
 
@@ -35,28 +34,28 @@ func (s *Store) Updates(c chan<- struct{}) {
 }
 
 func (s *Store) signalUpdates() {
-	for _, c := range(s.listeners) {
+	for _, c := range s.listeners {
 		c <- struct{}{}
 	}
 }
 
-func NewStore(back *os.File) *Store {
+func NewStore() *Store {
 	s := &Store{
-		rw:       sync.RWMutex{},
-		idsource: idsource.New(make([]int64, 0)),
-		m:        make(map[int64]*Parcel),
-		children: make(map[int64][]int64),
-		parent:   make(map[int64]int64),
-		topLevel: make(map[int64]bool),
-		revoked:  make(map[int64]bool),
+		rw:        sync.RWMutex{},
+		idsource:  idsource.New(make([]int64, 0)),
+		m:         make(map[int64]*Parcel),
+		children:  make(map[int64][]int64),
+		parent:    make(map[int64]int64),
+		topLevel:  make(map[int64]bool),
+		revoked:   make(map[int64]bool),
 		listeners: make([]chan<- struct{}, 0),
 	}
 	return s
 }
 
-func LoadStore(back *os.File) *Store {
+func LoadStore(source io.Reader) *Store {
 	d := &gobStore{}
-	dec := gob.NewDecoder(back)
+	dec := gob.NewDecoder(source)
 	err := dec.Decode(&d)
 	if err != nil {
 		// Create an empty default store if we were unable to load from the backing file.
@@ -68,20 +67,19 @@ func LoadStore(back *os.File) *Store {
 		d.Revoked = make(map[int64]bool)
 	}
 	s := &Store{
-		rw:       sync.RWMutex{},
-		back:     back,
-		idsource: idsource.New(d.SpentIDs),
-		m:        d.M,
-		children: d.Children,
-		parent:   d.Parent,
-		topLevel: d.TopLevel,
-		revoked:  d.Revoked,
+		rw:        sync.RWMutex{},
+		idsource:  idsource.New(d.SpentIDs),
+		m:         d.M,
+		children:  d.Children,
+		parent:    d.Parent,
+		topLevel:  d.TopLevel,
+		revoked:   d.Revoked,
 		listeners: make([]chan<- struct{}, 0),
 	}
 	return s
 }
 
-func (s *Store) DumpStore(back *os.File) {
+func (s *Store) DumpStore(dest io.Writer) {
 	s.withRLocked(func() {
 		d := gobStore{
 			SpentIDs: s.idsource.SpentIDs(),
@@ -91,16 +89,8 @@ func (s *Store) DumpStore(back *os.File) {
 			TopLevel: s.topLevel,
 			Revoked:  s.revoked,
 		}
-		_, err := s.back.Seek(0, 0)
-		if err != nil {
-			log.Fatalf("error: %v", err)
-		}
-		err = back.Truncate(0)
-		if err != nil {
-			log.Fatalf("error: %v", err)
-		}
-		enc := gob.NewEncoder(s.back)
-		err = enc.Encode(d)
+		enc := gob.NewEncoder(dest)
+		err := enc.Encode(d)
 		if err != nil {
 			log.Fatalf("error: %v", err)
 		}
