@@ -2,14 +2,15 @@ package main
 
 import (
 	"flag"
-	"github.com/jeanfric/liftca/ht"
-	"github.com/jeanfric/liftca"
-	"github.com/jeanfric/liftca/cmd/liftca/handlers"
 	"log"
 	"net/http"
 	"os"
 	"path/filepath"
 	"time"
+
+	"github.com/jeanfric/liftca"
+	"github.com/jeanfric/liftca/cmd/liftca/handlers"
+	"github.com/jeanfric/liftca/ht"
 )
 
 func main() {

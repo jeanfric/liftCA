@@ -4,11 +4,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"github.com/jeanfric/liftca"
 	"log"
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/jeanfric/liftca"
 
 	"github.com/gorilla/mux"
 )

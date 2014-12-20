@@ -2,10 +2,11 @@ package handlers
 
 import (
 	"fmt"
-	"github.com/jeanfric/liftca/ht"
-	"github.com/jeanfric/liftca"
 	"path"
 	"strconv"
+
+	"github.com/jeanfric/liftca"
+	"github.com/jeanfric/liftca/ht"
 )
 
 const (

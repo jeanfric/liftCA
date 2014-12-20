@@ -1,8 +1,9 @@
 package handlers
 
 import (
-	"github.com/jeanfric/liftca"
 	"strconv"
+
+	"github.com/jeanfric/liftca"
 )
 
 type JSONCAResponse struct {

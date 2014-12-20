@@ -2,9 +2,10 @@ package handlers
 
 import (
 	"fmt"
-	"github.com/jeanfric/liftca/ht"
-	"github.com/jeanfric/liftca"
 	"strconv"
+
+	"github.com/jeanfric/liftca"
+	"github.com/jeanfric/liftca/ht"
 )
 
 func GetCACertificateCER(store *liftca.Store, r *ht.Request) *ht.Answer {
@@ -106,7 +107,7 @@ func GetCRL(store *liftca.Store, r *ht.Request) *ht.Answer {
 	}
 
 	return ht.JSONDocument(&JSONCRLResponse{
-		Self: CACRLURL(ca.SerialNumber()),
+		Self:          CACRLURL(ca.SerialNumber()),
 		SerialNumbers: output,
 	})
 }

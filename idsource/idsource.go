@@ -8,13 +8,13 @@ import (
 type nothing struct{}
 
 type IDSource struct {
-	spent  map[int64]nothing
+	spent map[int64]nothing
 	mutex *sync.Mutex
 }
 
 func New(spent []int64) *IDSource {
 	s := &IDSource{
-		spent:  make(map[int64]nothing),
+		spent: make(map[int64]nothing),
 		mutex: &sync.Mutex{},
 	}
 	for _, v := range spent {

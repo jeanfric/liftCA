@@ -3,10 +3,11 @@ package liftca
 import (
 	"encoding/gob"
 	"fmt"
-	"github.com/jeanfric/liftca/idsource"
 	"io"
 	"log"
 	"sync"
+
+	"github.com/jeanfric/liftca/idsource"
 )
 
 type Store struct {

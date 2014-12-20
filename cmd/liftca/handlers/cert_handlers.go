@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"github.com/jeanfric/liftca/ht"
 	"github.com/jeanfric/liftca"
+	"github.com/jeanfric/liftca/ht"
 )
 
 func GetCertificatePEM(store *liftca.Store, r *ht.Request) *ht.Answer {
