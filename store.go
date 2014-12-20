@@ -3,7 +3,7 @@ package liftca
 import (
 	"encoding/gob"
 	"fmt"
-	"idsource"
+	"github.com/jeanfric/liftca/idsource"
 	"io"
 	"log"
 	"sync"

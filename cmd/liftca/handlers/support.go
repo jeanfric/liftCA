@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"fmt"
-	"ht"
-	"liftca"
+	"github.com/jeanfric/liftca/ht"
+	"github.com/jeanfric/liftca"
 	"path"
 	"strconv"
 )

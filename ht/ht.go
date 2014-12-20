@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"liftca"
+	"github.com/jeanfric/liftca"
 	"log"
 	"net/http"
 	"strconv"

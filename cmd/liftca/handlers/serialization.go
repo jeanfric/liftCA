@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"liftca"
+	"github.com/jeanfric/liftca"
 	"strconv"
 )
 

@@ -1,8 +1,2 @@
-bin
-pkg
-src/liftca/cmd/liftca/data
-src/**/*.exe
-src/liftca/cmd/liftca/store.gob
-# IntelliJ IDEA
-liftca.iml
-.idea/*
+cmd/liftca/store.gob
+cmd/liftca/liftca
