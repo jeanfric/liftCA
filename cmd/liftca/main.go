@@ -33,16 +33,29 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer backingFile.Close()
 	store := liftca.LoadStore(backingFile)
+	backingFile.Close()
 	storeChanged := make(chan struct{})
 	store.Updates(storeChanged)
-	go func(c <-chan struct{}) {
+	go func(path string, c <-chan struct{}) {
 		for {
 			<-c
+			err := os.Remove(path + ".backup")
+			if err != nil {
+				log.Fatal(err)
+			}
+			err = os.Rename(path, path+".backup")
+			if err != nil {
+				log.Fatal(err)
+			}
+			backingFile, err := os.OpenFile(path, os.O_CREATE|os.O_RDWR, 0666)
+			if err != nil {
+				log.Fatal(err)
+			}
 			store.DumpStore(backingFile)
+			backingFile.Close()
 		}
-	}(storeChanged)
+	}(storeFileArg, storeChanged)
 
 	var fileServer http.Handler
 
