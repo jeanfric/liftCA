@@ -7,11 +7,6 @@ It was built to simplify the work of generating certificates in an enclosed lab 
 
 Please be sure to understand the security implications of trusting new certificate authorities or certificates within the environment you use liftCA in.  Playing with these settings without fully understanding the implications can be dangerous.
 
-Demo Site
----------
-
-Visit http://liftca.com/ to try it out.
-
 How to Install and Run
 ----------------------
 
